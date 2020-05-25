@@ -19,80 +19,88 @@ class MemeViewController: UIViewController {
    @IBOutlet weak var shareButton: UIBarButtonItem!
    
    var meme: Meme!
+   var memeTextAttributes: [NSAttributedString.Key: Any]?
    
    override func viewDidLoad() {
       super.viewDidLoad()
 
       cameraButton.isEnabled = UIImagePickerController.isSourceTypeAvailable(.camera)
-      textFieldSetup(for: topTextField, withText: "Top")
-      textFieldSetup(for: bottomTextField, withText: "Bottom")
+      
+      memeTextAttributes = [
+          NSAttributedString.Key.strokeColor: UIColor.black,
+          NSAttributedString.Key.foregroundColor: UIColor.white,
+          NSAttributedString.Key.font: UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!,
+          NSAttributedString.Key.strokeWidth: NSNumber(-3)
+      ]
+      
+      textFieldSetup(for: topTextField, withText: "Top", withAttributes: memeTextAttributes)
+      textFieldSetup(for: bottomTextField, withText: "Bottom", withAttributes: memeTextAttributes)
       imagePickerView.contentMode = .scaleAspectFill
       shareButton.isEnabled = false
    }
    
    //MARK:- Methods
    // Atribute set up for text in text field
-   func textFieldSetup(for textField: UITextField, withText text: String) {
+   func textFieldSetup(for textField: UITextField, withText text: String, withAttributes attributes: [NSAttributedString.Key: Any]?) {
+      
       textField.text = text
       textField.delegate = self
       
-      let memeTextAttributes: [NSAttributedString.Key: Any] = [
-         NSAttributedString.Key.strokeColor: UIColor.black,
-         NSAttributedString.Key.foregroundColor: UIColor.white,
-          NSAttributedString.Key.font: UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!,
-          NSAttributedString.Key.strokeWidth: NSNumber(-3)
-      ]
-      
-      textField.defaultTextAttributes = memeTextAttributes
+      if let attributes = attributes {
+         textField.defaultTextAttributes = attributes
+      }
       textField.textAlignment = .center
    }
    
    // Enables the save button and creates a memed image that will be saved in memory
-   func save() {
-      let memedImage = generateMemedImage()
-      shareButton.isEnabled = true
-      meme = Meme(topText: topTextField.text!, bottomText: bottomTextField.text!, image: imagePickerView.image!, memedImage: memedImage)
+   func save(meme image: UIImage) {
+      meme = Meme(topText: topTextField.text!, bottomText: bottomTextField.text!, image: imagePickerView.image!, memedImage: image)
    }
-   
+
    func generateMemedImage() -> UIImage {
       
-      topToolBar.isHidden = true
-      bottomToolBar.isHidden = true
-      
+      toolBarShould(hide: true)
       UIGraphicsBeginImageContext(self.view.frame.size)
       view.drawHierarchy(in: self.view.frame, afterScreenUpdates: true)
       let memedImage: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
       UIGraphicsEndImageContext()
-      
-      topToolBar.isHidden = false
-      bottomToolBar.isHidden = false
+      toolBarShould(hide: false)
       return memedImage
+   }
+   
+   func toolBarShould(hide permission: Bool) {
+      topToolBar.isHidden = permission
+      bottomToolBar.isHidden = permission
+   }
+   
+   func presentImagePicker(with sourceType: UIImagePickerController.SourceType) {
+      let imagePicker = UIImagePickerController()
+      imagePicker.delegate = self
+      imagePicker.sourceType = sourceType
+      present(imagePicker, animated: true, completion: nil)
    }
    
    //MARK:- Actions
    @IBAction func pickAnImageFromAlbum(_ sender: UIBarButtonItem) {
-      let imagePicker = UIImagePickerController()
-      imagePicker.delegate = self
-      imagePicker.sourceType = .photoLibrary
-      present(imagePicker, animated: true, completion: nil)
+      presentImagePicker(with: .photoLibrary)
    }
    
    @IBAction func pickAnImageFromCamera(_ sender: UIBarButtonItem) {
-      let imagePicker = UIImagePickerController()
-      imagePicker.delegate = self
-      imagePicker.sourceType = .camera
-      present(imagePicker, animated: true, completion: nil)
+      presentImagePicker(with: .camera)
    }
    
    @IBAction func shareImage(_ sender: UIBarButtonItem) {
-      
-      let activityViewController = UIActivityViewController(activityItems: [meme!.memedImage], applicationActivities: nil)
+      let memedImage = generateMemedImage()
+      let activityViewController = UIActivityViewController(activityItems: [memedImage], applicationActivities: nil)
+      activityViewController.completionWithItemsHandler = { (activity, setup, object, error) in
+         self.save(meme: memedImage)
+      }
       present(activityViewController, animated: true, completion: nil)
    }
    
    @IBAction func cancelButtonPressed(_ sender: UIBarButtonItem) {
-      textFieldSetup(for: topTextField, withText: "Top")
-      textFieldSetup(for: bottomTextField, withText: "Bottom")
+      textFieldSetup(for: topTextField, withText: "Top", withAttributes: memeTextAttributes)
+      textFieldSetup(for: bottomTextField, withText: "Bottom", withAttributes: memeTextAttributes)
       imagePickerView.image = nil
       shareButton.isEnabled = false
    }
@@ -154,14 +162,12 @@ extension MemeViewController: UIImagePickerControllerDelegate, UINavigationContr
       
       if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
          imagePickerView.image = image
+         shareButton.isEnabled = true
       }
-      
-      save()
       dismiss(animated: true)
    }
    
    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-      
       dismiss(animated: true)
    }
 }

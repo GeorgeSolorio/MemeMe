@@ -9,8 +9,8 @@
 import UIKit
 
 struct Meme {
-   var topText: String
-   var bottomText: String
-   var image: UIImage
-   var memedImage: UIImage
+   let topText: String
+   let bottomText: String
+   let image: UIImage
+   let memedImage: UIImage
 }
