@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  MemeViewController.swift
 //  MemeMe
 //
 //  Created by George Solorio on 5/21/20.
@@ -24,7 +24,6 @@ class MemeViewController: UIViewController {
       super.viewDidLoad()
 
       cameraButton.isEnabled = UIImagePickerController.isSourceTypeAvailable(.camera)
-      
       textFieldSetup(for: topTextField, withText: "Top")
       textFieldSetup(for: bottomTextField, withText: "Bottom")
       imagePickerView.contentMode = .scaleAspectFill
@@ -71,16 +70,14 @@ class MemeViewController: UIViewController {
    }
    
    //MARK:- Actions
-   @IBAction func pickAnImageFromAlbum(_ sender: Any) {
-      
+   @IBAction func pickAnImageFromAlbum(_ sender: UIBarButtonItem) {
       let imagePicker = UIImagePickerController()
       imagePicker.delegate = self
       imagePicker.sourceType = .photoLibrary
       present(imagePicker, animated: true, completion: nil)
    }
    
-   @IBAction func pickAnImageFromCamera(_ sender: Any) {
-           
+   @IBAction func pickAnImageFromCamera(_ sender: UIBarButtonItem) {
       let imagePicker = UIImagePickerController()
       imagePicker.delegate = self
       imagePicker.sourceType = .camera
@@ -91,6 +88,13 @@ class MemeViewController: UIViewController {
       
       let activityViewController = UIActivityViewController(activityItems: [meme!.memedImage], applicationActivities: nil)
       present(activityViewController, animated: true, completion: nil)
+   }
+   
+   @IBAction func cancelButtonPressed(_ sender: UIBarButtonItem) {
+      textFieldSetup(for: topTextField, withText: "Top")
+      textFieldSetup(for: bottomTextField, withText: "Bottom")
+      imagePickerView.image = nil
+      shareButton.isEnabled = false
    }
 }
 

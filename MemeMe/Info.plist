@@ -2,6 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key></key>
+	<string></string>
+	<key>NSCameraUsageDescription</key>
+	<string>Please enable use so may enjoy the meme creator app</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Please allow access to library so you can access photos and create a meme</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
