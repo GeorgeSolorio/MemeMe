@@ -30,6 +30,9 @@ class MemeViewController: UIViewController {
     var meme: Meme?
     weak var delegate: MemeViewControllerDelegate?
     
+    // Prevents duplicated shared memes
+    var permissionToSave = true
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         delegate?.memeViewControllerWillAppear(self)
@@ -120,7 +123,9 @@ class MemeViewController: UIViewController {
         activityViewController.completionWithItemsHandler = { (activity, setup, object, error) in
             switch activity {
             case UIActivity.ActivityType.message, UIActivity.ActivityType.saveToCameraRoll:
-                self.save(meme: memedImage)
+                if self.permissionToSave {
+                    self.save(meme: memedImage)
+                }
             default:
                 break
             }

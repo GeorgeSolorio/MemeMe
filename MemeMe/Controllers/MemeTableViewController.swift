@@ -110,6 +110,7 @@ extension MemeTableViewController: MemeViewControllerDelegate {
         controller.bottomTextField.isEnabled = permissionToEdit
         controller.shareButton.isEnabled = !permissionToEdit
         controller.bottomToolBar.isHidden = !permissionToEdit
+        controller.permissionToSave = permissionToEdit
     }
     
     func didUpdate() {
