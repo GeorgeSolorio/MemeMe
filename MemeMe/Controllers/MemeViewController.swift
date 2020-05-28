@@ -11,6 +11,7 @@ import UIKit
 protocol MemeViewControllerDelegate: class {
     func didUpdate()
     func memeViewControllerDidCancel(_ controller: MemeViewController)
+    func memeViewControllerWillAppear(_ controller: MemeViewController)
 }
 
 class MemeViewController: UIViewController {
@@ -28,6 +29,11 @@ class MemeViewController: UIViewController {
     var memeTextAttributes: [NSAttributedString.Key: Any]?
     var meme: Meme?
     weak var delegate: MemeViewControllerDelegate?
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        delegate?.memeViewControllerWillAppear(self)
+    }
     
     //MARK: MemeViewController Cycle Functions
     override func viewDidLoad() {

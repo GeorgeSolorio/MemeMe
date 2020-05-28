@@ -12,7 +12,10 @@ class MemeCollectionViewController: UICollectionViewController {
 
     //MARK: Properties
     @IBOutlet weak var flowLayout: UICollectionViewFlowLayout!
-
+    
+    // Permission to allow users to edit when adding or looking at a meme
+    var permissionToEdit = false
+    
     //Accessing memes from AppDelegate
     var memes: [Meme] {
         let object = UIApplication.shared.delegate
@@ -44,20 +47,14 @@ class MemeCollectionViewController: UICollectionViewController {
     //MARK: Methods
     func presentMemeViewController(with meme: Meme?, canEdit permission: Bool) {
         
-        let memeViewController = storyboard!.instantiateViewController(identifier: "MemeViewController") as! MemeViewController
-        
+        let memeViewController = storyboard!.instantiateViewController(identifier: MemeControllerIdentifier.name) as! MemeViewController
         memeViewController.delegate = self
-        
         if let meme = meme {
              memeViewController.meme = meme
         }
-        navigationController?.present(memeViewController, animated: true) {
-            memeViewController.viewTitle.title = permission ? "Meme Generator!" : "Meme"
-            memeViewController.topTextField.isEnabled = permission
-            memeViewController.bottomTextField.isEnabled = permission
-            memeViewController.shareButton.isEnabled = !permission
-            memeViewController.bottomToolBar.isHidden = !permission
-        }
+        
+        self.permissionToEdit = permission
+        navigationController?.present(memeViewController, animated: true)
     }
 }
 
@@ -70,7 +67,7 @@ extension MemeCollectionViewController {
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MemeCollectionViewCell", for: indexPath) as! MemeCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MemeCollectionViewIdentifier.cellName, for: indexPath) as! MemeCollectionViewCell
         
         let meme = memes[indexPath.row]
         cell.memeImage.image = meme.memedImage
@@ -87,6 +84,16 @@ extension MemeCollectionViewController {
 
 //MARK:- MemeViewController Delegate
 extension MemeCollectionViewController: MemeViewControllerDelegate {
+    
+    // Setsup the MemeView controller before it appears on the screen
+    func memeViewControllerWillAppear(_ controller: MemeViewController) {
+        
+        controller.viewTitle.title = permissionToEdit ? "Meme Generator!" : "Your Meme"
+        controller.topTextField.isEnabled = permissionToEdit
+        controller.bottomTextField.isEnabled = permissionToEdit
+        controller.shareButton.isEnabled = !permissionToEdit
+        controller.bottomToolBar.isHidden = !permissionToEdit
+    }
     
     func didUpdate() {
         collectionView.reloadData()

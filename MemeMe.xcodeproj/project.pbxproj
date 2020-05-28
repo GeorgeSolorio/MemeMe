@@ -18,6 +18,7 @@
 		C03DF7A7247DA99A00AE51E3 /* MemeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03DF7A6247DA99A00AE51E3 /* MemeCollectionViewCell.swift */; };
 		C09DD17224778AE000B8CCC9 /* Meme.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09DD17124778ADF00B8CCC9 /* Meme.swift */; };
 		C0B165B3247E0AB000A8CDF9 /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B165B2247E0AB000A8CDF9 /* TableViewCell.swift */; };
+		C0B99DE524802EE600FA2362 /* Identifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B99DE424802EE600FA2362 /* Identifiers.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 		C03DF7A6247DA99A00AE51E3 /* MemeCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemeCollectionViewCell.swift; sourceTree = "<group>"; };
 		C09DD17124778ADF00B8CCC9 /* Meme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Meme.swift; sourceTree = "<group>"; };
 		C0B165B2247E0AB000A8CDF9 /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
+		C0B99DE424802EE600FA2362 /* Identifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Identifiers.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,6 +94,7 @@
 			isa = PBXGroup;
 			children = (
 				C09DD17124778ADF00B8CCC9 /* Meme.swift */,
+				C0B99DE424802EE600FA2362 /* Identifiers.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -181,6 +184,7 @@
 				C0B165B3247E0AB000A8CDF9 /* TableViewCell.swift in Sources */,
 				C09DD17224778AE000B8CCC9 /* Meme.swift in Sources */,
 				C019C38324771116006979E5 /* AppDelegate.swift in Sources */,
+				C0B99DE524802EE600FA2362 /* Identifiers.swift in Sources */,
 				C03DF7A7247DA99A00AE51E3 /* MemeCollectionViewCell.swift in Sources */,
 				C03DF7A3247D9E3800AE51E3 /* MemeTableViewController.swift in Sources */,
 				C03DF7A5247D9E4B00AE51E3 /* MemeCollectionViewController.swift in Sources */,

@@ -17,7 +17,9 @@ class MemeTableViewController: UITableViewController {
         let appDelegate = object as! AppDelegate
         return appDelegate.memes
     }
-    
+    // Permission to allow users to edit when adding or looking at a meme
+    var permissionToEdit = false
+
     @IBOutlet weak var editButton: UIBarButtonItem!
     
     //MARK: Controller View Cycle Functions
@@ -47,21 +49,14 @@ class MemeTableViewController: UITableViewController {
     //MARK: Methods
     func presentMemeViewController(with meme: Meme?, canEdit permission: Bool) {
         
-        let memeViewController = storyboard!.instantiateViewController(identifier: "MemeViewController") as! MemeViewController
+        let memeViewController = storyboard!.instantiateViewController(identifier: MemeControllerIdentifier.name) as! MemeViewController
         memeViewController.delegate = self
         if let meme = meme {
              memeViewController.meme = meme
         }
-        
-        // Prevents user from editing memes if they're just looking the meme
-        navigationController?.present(memeViewController, animated: true) {
-            
-            memeViewController.viewTitle.title = permission ? "Meme Generator!" : "Your Meme"
-            memeViewController.topTextField.isEnabled = permission
-            memeViewController.bottomTextField.isEnabled = permission
-            memeViewController.shareButton.isEnabled = !permission
-            memeViewController.bottomToolBar.isHidden = !permission
-        }
+
+        self.permissionToEdit = permission
+        navigationController?.present(memeViewController, animated: true)
     }
 }
 
@@ -74,7 +69,7 @@ extension MemeTableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "MemeTableViewCell", for: indexPath) as! TableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: MemeTableViewIdentifier.cellName, for: indexPath) as! TableViewCell
         let meme = memes[indexPath.row]
         cell.memeImage.image = meme.memedImage
         cell.textField.text = "\(meme.topText) \(meme.bottomText)"
@@ -107,6 +102,16 @@ extension MemeTableViewController {
 
 //MARK:- MemeControllerView Delegate functions
 extension MemeTableViewController: MemeViewControllerDelegate {
+    
+    // Setsup the MemeView controller before it appears on the screen
+    func memeViewControllerWillAppear(_ controller: MemeViewController) {
+        controller.viewTitle.title = permissionToEdit ? "Meme Generator!" : "Your Meme"
+        controller.topTextField.isEnabled = permissionToEdit
+        controller.bottomTextField.isEnabled = permissionToEdit
+        controller.shareButton.isEnabled = !permissionToEdit
+        controller.bottomToolBar.isHidden = !permissionToEdit
+    }
+    
     func didUpdate() {
         tableView.reloadData()
     }
@@ -114,4 +119,5 @@ extension MemeTableViewController: MemeViewControllerDelegate {
     func memeViewControllerDidCancel(_ controller: MemeViewController) {
         dismiss(animated: true)
     }
+
 }
