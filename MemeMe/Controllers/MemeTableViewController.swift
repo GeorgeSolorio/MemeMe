@@ -55,9 +55,11 @@ class MemeTableViewController: UITableViewController {
         
         // Prevents user from editing memes if they're just looking the meme
         navigationController?.present(memeViewController, animated: true) {
+            
+            memeViewController.viewTitle.title = permission ? "Meme Generator!" : "Your Meme"
             memeViewController.topTextField.isEnabled = permission
             memeViewController.bottomTextField.isEnabled = permission
-            memeViewController.topToolBar.isHidden = !permission
+            memeViewController.shareButton.isEnabled = !permission
             memeViewController.bottomToolBar.isHidden = !permission
         }
     }

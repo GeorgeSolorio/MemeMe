@@ -23,7 +23,8 @@ class MemeViewController: UIViewController {
     @IBOutlet weak var topToolBar: UIToolbar!
     @IBOutlet weak var bottomToolBar: UIToolbar!
     @IBOutlet weak var shareButton: UIBarButtonItem!
-
+    @IBOutlet weak var viewTitle: UIBarButtonItem!
+    
     var memeTextAttributes: [NSAttributedString.Key: Any]?
     var meme: Meme?
     weak var delegate: MemeViewControllerDelegate?

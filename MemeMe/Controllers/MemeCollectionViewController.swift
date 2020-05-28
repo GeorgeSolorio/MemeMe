@@ -52,13 +52,13 @@ class MemeCollectionViewController: UICollectionViewController {
              memeViewController.meme = meme
         }
         navigationController?.present(memeViewController, animated: true) {
+            memeViewController.viewTitle.title = permission ? "Meme Generator!" : "Meme"
             memeViewController.topTextField.isEnabled = permission
             memeViewController.bottomTextField.isEnabled = permission
-            memeViewController.topToolBar.isHidden = !permission
+            memeViewController.shareButton.isEnabled = !permission
             memeViewController.bottomToolBar.isHidden = !permission
         }
     }
-    
 }
 
 // MARK:- UICollectionView DataSource
